@@ -8,17 +8,14 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 
 class ConnectionHandler extends Thread {
-	Socket client;
-	RPi pi;
+	Socket client;;
 
-	ConnectionHandler (Socket client, RPi pi) throws SocketException {
+	ConnectionHandler (Socket client) throws SocketException {
 		this.client = client;
-		this.pi = pi;
 		setPriority(NORM_PRIORITY - 1);
 	}
 
@@ -74,18 +71,7 @@ class ConnectionHandler extends Thread {
 			location = location.substring(1);
 		}
 		if (location.endsWith("/") || location.equals("")) {
-			if (this.pi.getLedOn()) {
-				location = "on.html";
-			} else {
-				location = "off.html";
-			}
-		}
-		if (location.equals("on")) {     // toggle handler
-			this.pi.on();
-			loadPage("on.html", out);
-		} else if (location.equals("off")) {
-			this.pi.off();
-			loadPage("off.html", out);
+			//index
 		} else {
 			loadPage(location, out);
 		}
@@ -95,19 +81,6 @@ class ConnectionHandler extends Thread {
 	private void post(String location, OutputStream out, PrintWriter writer, HashMap<String, String> form) throws ObjectNotFoundException, InterruptedException {
 		if (location.startsWith("/")) {
 			location = location.substring(1);
-		}
-		// switch on location
-		if (location.equals("morse")) { 	// morse code handler
-			try {
-				this.pi.morseCode(form.get("code").toLowerCase().toCharArray());
-			} catch (PiInUseException e) {
-				loadPage("inUse.html", out);
-			}
-			if (this.pi.getLedOn()) {
-				loadPage("on.html", out);
-			} else {
-				loadPage("off.html", out);
-			}
 		}
 	}
 

@@ -2,10 +2,8 @@ import java.net.*;
 import java.io.*;
 
 public class WebServer { 
-	private RPi pi;
 	
-	public WebServer(RPi pi) {
-		this.pi = pi;
+	public WebServer() {
 	}
 	
 	public void listen(int port) throws IOException {
@@ -13,7 +11,7 @@ public class WebServer {
 		ServerSocket ss = new ServerSocket(port);
 		System.out.printf("-----Listening On %d-----\n", port);
 		while (true) {
-			new ConnectionHandler(ss.accept(), this.pi).start();
+			new ConnectionHandler(ss.accept()).start();
 		}
 	}
 }
