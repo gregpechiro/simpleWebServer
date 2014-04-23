@@ -6,6 +6,7 @@ import com.pi4j.io.gpio.RaspiPin;
 public class Main {
 
 	public static void main(String[] args) {
+		System.out.println("test");
 		RPi pi = new RPi();
 		pi.setLedPin(RaspiPin.GPIO_07);
 		WebServer server = new WebServer(pi);
